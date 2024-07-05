@@ -2,12 +2,12 @@
 
 // Prices for the items
 const prices = {
-    qty1: 300.00,
-    qty2: 200.00,
-    qty3: 250.00,
-    qty4: 270.00,
-    qty5: 290.00,
-    qty6: 270.00
+    qty1: 5000.00,
+    qty2: 10000.00,
+    qty3: 9000.00,
+    qty4: 8000.00,
+    qty5: 7000.00,
+    qty6: 6000.00
 };
 
 // Update order details
