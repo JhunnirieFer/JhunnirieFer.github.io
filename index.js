@@ -1,85 +1,43 @@
-var products = [
-        {
-          product: document.getElementById('product1').textContent,
-          qty: document.getElementById('qty1'),
-          price: parseFloat(document.getElementById('price1').textContent),
-        },
-        {
-          product: document.getElementById('product2').textContent,
-          qty: document.getElementById('qty2'),
-          price: parseFloat(document.getElementById('price2').textContent),
-        },
-        {
-          product: document.getElementById('product3').textContent,
-          qty: document.getElementById('qty3'),
-          price: parseFloat(document.getElementById('price3').textContent),
-        },
-        {
-          product: document.getElementById('product4').textContent,
-          qty: document.getElementById('qty4'),
-          price: parseFloat(document.getElementById('price4').textContent),
-        },
-        {
-          product: document.getElementById('product5').textContent,
-          qty: document.getElementById('qty5'),
-          price: parseFloat(document.getElementById('price5').textContent),
-        },
-        {
-          
-          product: document.getElementById('product6').textContent,
-          qty: document.getElementById('qty6'),
-          price: parseFloat(document.getElementById('price6').textContent),
-        },
-      ]
+// app.js
 
-      var carts = document.getElementById('carts')
-      var total = document.getElementById('total')
-      var cash = document.getElementById('cash')
-      var change = document.getElementById('change')
-      var errorMessage = document.getElementById('error-message')
+// Prices for the items
+const prices = {
+    qty1: 300.00,
+    qty2: 200.00,
+    qty3: 250.00,
+    qty4: 270.00,
+    qty5: 290.00,
+    qty6: 270.00
+};
 
-      function addOrder() {
-        carts.textContent = ''
-        var totalPrice = 0
+// Update order details
+function updateOrder() {
+    let orderDetails = "";
+    let total = 0;
 
-        products.forEach(function (item) {
-          if (parseFloat(item.qty.value) > 0) {
-            var order =
-              item.qty.value.toString() +
-              ' pc/s x Php ' +
-              item.price +
-              ' ------ ' +
-              item.product +
-              ' ------ ' +
-              (parseFloat(item.qty.value) * item.price).toFixed(2) +
-              '\n'
-            carts.textContent += order
-            totalPrice += parseFloat(item.qty.value) * item.price
-          }
-        })
+    for (let i = 1; i <= 6; i++) {
+        let qty = document.getElementById(`qty${i}`).value;
+        if (qty > 0) {
+            let itemPrice = prices[`qty${i}`];
+            let itemTotal = qty * itemPrice;
+            orderDetails += `Item ${i}: ${qty} x ₱${itemPrice.toFixed(2)} = ₱${itemTotal.toFixed(2)}\n`;
+            total += itemTotal;
+        }
+    }
 
-        total.value = 'Php ' + totalPrice.toFixed(2)
+    document.getElementById("carts").value = orderDetails;
+    document.getElementById("total").value = `Total: ₱${total.toFixed(2)}`;
+}
 
-        cash.addEventListener('keyup', function () {
-          var cashTendered = parseFloat(cash.value)
-          var changeAmount = cashTendered - totalPrice
-          if (!isNaN(changeAmount) && changeAmount >= 0) {
-            change.value = 'Php ' + changeAmount.toFixed(2)
-            errorMessage.textContent = ''
-          } else {
-            change.value = 'Php 0.00'
-            if (cashTendered < totalPrice) {
-              errorMessage.textContent = 'Insufficient cash'
-            } else {
-              errorMessage.textContent = ''
-            }
-          }
-        })
-      }
+// Calculate change
+function calculateChange() {
+    let total = parseFloat(document.getElementById("total").value.replace("Total: ₱", ""));
+    let cash = parseFloat(document.getElementById("cash").value);
 
-      products.forEach(function (item) {
-        item.qty.addEventListener('keyup', addOrder)
-      })
-    </script>
-  </body>
-</html>
+    if (!isNaN(total) && !isNaN(cash)) {
+        let change = cash - total;
+        document.getElementById("change").value = `Change: ₱${change.toFixed(2)}`;
+    } else {
+        document.getElementById("change").value = "Change: ₱0.00";
+    }
+}
